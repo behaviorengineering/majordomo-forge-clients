@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitrun"
+	"github.com/behaviorengineering/gitvalet/pkg/gitrun"
 )
 
 // FastForwardPull runs git pull --ff-only for one branch when the worktree is clean.

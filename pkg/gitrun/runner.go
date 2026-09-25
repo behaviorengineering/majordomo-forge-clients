@@ -7,7 +7,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
 )
 
 // Runner runs git with optional auth headers and working directory.

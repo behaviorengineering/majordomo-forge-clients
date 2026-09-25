@@ -13,7 +13,7 @@ func TestBareInvokePrintsGuide(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("code %d", code)
 	}
-	if !strings.Contains(buf.String(), "majordomo-forge") {
+	if !strings.Contains(buf.String(), "gitvalet") {
 		t.Fatal("expected guide")
 	}
 }

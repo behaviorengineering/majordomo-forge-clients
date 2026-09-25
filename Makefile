@@ -3,7 +3,7 @@
 GOWORK ?= off
 
 build:
-	GOWORK=$(GOWORK) go build -o bin/majordomo-forge ./cmd/majordomo-forge
+	GOWORK=$(GOWORK) go build -o bin/gitvalet ./cmd/gitvalet
 
 test:
 	GOWORK=$(GOWORK) go test -race -count=1 ./...
@@ -21,8 +21,8 @@ lint:
 	golangci-lint run ./...
 
 smoke:
-	./bin/majordomo-forge
-	./bin/majordomo-forge help
-	./bin/majordomo-forge version
-	./bin/majordomo-forge nope || test $$? = 2
-	./bin/majordomo-forge sync --dry-run
+	./bin/gitvalet
+	./bin/gitvalet help
+	./bin/gitvalet version
+	./bin/gitvalet nope || test $$? = 2
+	./bin/gitvalet sync --dry-run

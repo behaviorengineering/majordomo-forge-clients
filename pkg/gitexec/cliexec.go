@@ -19,8 +19,8 @@ type Exec interface {
 
 // Runner executes external CLIs with a timeout and failsafe-go resilience.
 type Runner struct {
-	Timeout time.Duration
-	attempt func(ctx context.Context, timeout time.Duration, name string, args ...string) ([]byte, error)
+	Timeout    time.Duration
+	attempt    func(ctx context.Context, timeout time.Duration, name string, args ...string) ([]byte, error)
 	resilience *runnerResilience
 }
 

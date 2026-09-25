@@ -5,7 +5,7 @@ import (
 	"os"
 	"runtime/debug"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/internal/cli"
+	"github.com/behaviorengineering/gitvalet/internal/cli"
 )
 
 var buildVersion string

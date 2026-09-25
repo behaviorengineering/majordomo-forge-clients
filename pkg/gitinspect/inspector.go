@@ -4,8 +4,8 @@ import (
 	"context"
 	"strings"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitrun"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/gitrun"
 )
 
 // Inspector performs read-only git inspection in a repository directory.

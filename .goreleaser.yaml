@@ -1,10 +1,10 @@
 version: 2
-project_name: majordomo-forge-clients
+project_name: gitvalet
 
 builds:
-  - id: majordomo-forge
-    main: ./cmd/majordomo-forge
-    binary: majordomo-forge
+  - id: gitvalet
+    main: ./cmd/gitvalet
+    binary: gitvalet
     env:
       - CGO_ENABLED=0
     goos:
@@ -28,4 +28,4 @@ checksum:
 release:
   github:
     owner: behaviorengineering
-    name: majordomo-forge-clients
+    name: gitvalet

@@ -1,4 +1,4 @@
-module github.com/behaviorengineering/majordomo-forge-clients
+module github.com/behaviorengineering/gitvalet
 
 go 1.26.0
 
