@@ -6,7 +6,6 @@ import (
 	"strings"
 	"sync"
 	"time"
-
 )
 
 // OriginFetchCache TTL-gates full origin fetches by common git dir.

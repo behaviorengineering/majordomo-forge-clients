@@ -65,12 +65,12 @@ jobs:
         env:
           GOWORK: off
         run: |
-          go build -o majordomo-forge ./cmd/majordomo-forge
-          ./majordomo-forge
-          ./majordomo-forge help
-          ./majordomo-forge version
-          ./majordomo-forge unknown || test $? = 2
-          ./majordomo-forge sync --dry-run
+          go build -o gitvalet ./cmd/gitvalet
+          ./gitvalet
+          ./gitvalet help
+          ./gitvalet version
+          ./gitvalet unknown || test $? = 2
+          ./gitvalet sync --dry-run
 
       - name: gitleaks
         uses: gitleaks/gitleaks-action@v2

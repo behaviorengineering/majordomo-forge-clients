@@ -12,7 +12,7 @@ import (
 
 	"github.com/git-pkgs/clone"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
 )
 
 // Client materializes exact commit SHAs into local directories.

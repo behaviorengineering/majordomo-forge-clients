@@ -1,4 +1,4 @@
-# Majordomo Forge Clients harness
+# gitvalet harness
 
 Portable forge and Git integration module. Product review policy and TUI workflows stay in consumer repositories.
 
@@ -17,6 +17,6 @@ Portable forge and Git integration module. Product review policy and TUI workflo
 
 ## CLI
 
-Always invoke an explicit subcommand. Bare `majordomo-forge` prints the agent guide only.
+Always invoke an explicit subcommand. Bare `gitvalet` prints the agent guide only.
 
 Mutating `sync` requires `--yes` or `--dry-run`.

@@ -7,8 +7,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitclone"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/gitclone"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
 )
 
 func TestAuthArgsDoNotContainRawToken(t *testing.T) {

@@ -11,22 +11,22 @@ import (
 	"strings"
 	"time"
 
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/auth"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitclone"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitinspect"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitmutate"
-	"github.com/behaviorengineering/majordomo-forge-clients/pkg/gitrun"
+	"github.com/behaviorengineering/gitvalet/pkg/auth"
+	"github.com/behaviorengineering/gitvalet/pkg/gitclone"
+	"github.com/behaviorengineering/gitvalet/pkg/gitinspect"
+	"github.com/behaviorengineering/gitvalet/pkg/gitmutate"
+	"github.com/behaviorengineering/gitvalet/pkg/gitrun"
 )
 
 // Exit codes for CI callers.
 const (
-	ExitOK          = 0
-	ExitUsage       = 2
+	ExitOK           = 0
+	ExitUsage        = 2
 	ExitPrecondition = 3
-	ExitRemote      = 4
-	ExitAuth        = 5
-	ExitCancel      = 6
-	ExitInternal    = 1
+	ExitRemote       = 4
+	ExitAuth         = 5
+	ExitCancel       = 6
+	ExitInternal     = 1
 )
 
 var version = "dev"
@@ -50,7 +50,7 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 		printHelp(w)
 		return ExitOK
 	case "version":
-		fmt.Fprintf(w, "majordomo-forge %s\n", version)
+		fmt.Fprintf(w, "gitvalet %s\n", version)
 		return ExitOK
 	case "inspect":
 		return runInspect(ctx, args[1:], w)
@@ -67,14 +67,14 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 }
 
 func printAgentGuide(w io.Writer) {
-	fmt.Fprintln(w, "majordomo-forge: CI-friendly forge and git client")
+	fmt.Fprintln(w, "gitvalet: CI-friendly forge and git client")
 	fmt.Fprintln(w, "Load ai-copilots/BOOTSTRAP.md for harness wiring.")
 	fmt.Fprintln(w, "Commands: help, version, inspect, resolve, checkout, sync")
 	fmt.Fprintln(w, "Mutating: sync requires --yes; use --dry-run to plan.")
 }
 
 func printHelp(w io.Writer) {
-	fmt.Fprintln(w, "Usage: majordomo-forge <command> [flags]")
+	fmt.Fprintln(w, "Usage: gitvalet <command> [flags]")
 	fmt.Fprintln(w, "Commands:")
 	fmt.Fprintln(w, "  help       human command catalog")
 	fmt.Fprintln(w, "  version    release identity")
