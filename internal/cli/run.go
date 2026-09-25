@@ -50,7 +50,7 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 		printHelp(w)
 		return ExitOK
 	case "version":
-		fmt.Fprintf(w, "gitvalet %s\n", version)
+		writef(w, "gitvalet %s\n", version)
 		return ExitOK
 	case "inspect":
 		return runInspect(ctx, args[1:], w)
@@ -67,21 +67,21 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 }
 
 func printAgentGuide(w io.Writer) {
-	fmt.Fprintln(w, "gitvalet: CI-friendly forge and git client")
-	fmt.Fprintln(w, "Load ai-copilots/BOOTSTRAP.md for harness wiring.")
-	fmt.Fprintln(w, "Commands: help, version, inspect, resolve, checkout, sync")
-	fmt.Fprintln(w, "Mutating: sync requires --yes; use --dry-run to plan.")
+	writel(w, "gitvalet: CI-friendly forge and git client")
+	writel(w, "Load ai-copilots/BOOTSTRAP.md for harness wiring.")
+	writel(w, "Commands: help, version, inspect, resolve, checkout, sync")
+	writel(w, "Mutating: sync requires --yes; use --dry-run to plan.")
 }
 
 func printHelp(w io.Writer) {
-	fmt.Fprintln(w, "Usage: gitvalet <command> [flags]")
-	fmt.Fprintln(w, "Commands:")
-	fmt.Fprintln(w, "  help       human command catalog")
-	fmt.Fprintln(w, "  version    release identity")
-	fmt.Fprintln(w, "  inspect    read-only repository state")
-	fmt.Fprintln(w, "  resolve    resolve remote branch to SHA")
-	fmt.Fprintln(w, "  checkout   materialize pinned checkout")
-	fmt.Fprintln(w, "  sync       fast-forward pull (mutating)")
+	writel(w, "Usage: gitvalet <command> [flags]")
+	writel(w, "Commands:")
+	writel(w, "  help       human command catalog")
+	writel(w, "  version    release identity")
+	writel(w, "  inspect    read-only repository state")
+	writel(w, "  resolve    resolve remote branch to SHA")
+	writel(w, "  checkout   materialize pinned checkout")
+	writel(w, "  sync       fast-forward pull (mutating)")
 }
 
 func runInspect(ctx context.Context, args []string, w io.Writer) int {
@@ -94,7 +94,7 @@ func runInspect(ctx context.Context, args []string, w io.Writer) int {
 	in := gitinspect.NewInspector(auth.Credential{})
 	url, err := in.OriginURL(ctx, *dir)
 	if err != nil {
-		fmt.Fprintf(w, "inspect: %v\n", err)
+		writef(w, "inspect: %v\n", err)
 		return ExitPrecondition
 	}
 	ref, ok := gitinspect.ParseRemoteURL(url)
@@ -106,7 +106,7 @@ func runInspect(ctx context.Context, args []string, w io.Writer) int {
 		})
 		return ExitOK
 	}
-	fmt.Fprintf(w, "origin=%s parsed=%v host=%s path=%s\n", url, ok, ref.Host, ref.Path)
+	writef(w, "origin=%s parsed=%v host=%s path=%s\n", url, ok, ref.Host, ref.Path)
 	return ExitOK
 }
 
@@ -127,14 +127,14 @@ func runResolve(ctx context.Context, args []string, w io.Writer) int {
 	client := &gitclone.Client{Cred: cred}
 	sha, err := client.ResolveBranchHead(ctx, *remote, *branch)
 	if err != nil {
-		fmt.Fprintf(w, "resolve: %v\n", err)
+		writef(w, "resolve: %v\n", err)
 		return ExitRemote
 	}
 	if *jsonOut {
 		_ = json.NewEncoder(w).Encode(map[string]string{"sha": sha, "branch": *branch})
 		return ExitOK
 	}
-	fmt.Fprintln(w, sha)
+	writel(w, sha)
 	return ExitOK
 }
 
@@ -151,7 +151,7 @@ func runCheckout(ctx context.Context, args []string, w io.Writer) int {
 		return ExitUsage
 	}
 	if *dryRun {
-		fmt.Fprintf(w, "would checkout %s into %s\n", *sha, *dst)
+		writef(w, "would checkout %s into %s\n", *sha, *dst)
 		return ExitOK
 	}
 	cred := credentialFromFlags(*token, *scm, *remote)
@@ -159,10 +159,10 @@ func runCheckout(ctx context.Context, args []string, w io.Writer) int {
 	defer cancel()
 	client := &gitclone.Client{Cred: cred}
 	if err := client.EnsureCheckout(ctx, *remote, *dst, *sha); err != nil {
-		fmt.Fprintf(w, "checkout: %v\n", err)
+		writef(w, "checkout: %v\n", err)
 		return ExitRemote
 	}
-	fmt.Fprintf(w, "checked out %s\n", *sha)
+	writef(w, "checked out %s\n", *sha)
 	return ExitOK
 }
 
@@ -174,25 +174,33 @@ func runSync(ctx context.Context, args []string, w io.Writer) int {
 	dryRun := fs.Bool("dry-run", false, "plan only")
 	_ = fs.Parse(args)
 	if !*yes && !*dryRun {
-		fmt.Fprintln(w, "sync: mutating command requires --yes or --dry-run")
+		writel(w, "sync: mutating command requires --yes or --dry-run")
 		return ExitUsage
 	}
 	if *dryRun {
-		fmt.Fprintf(w, "would fast-forward %s on %s\n", *branch, *dir)
+		writef(w, "would fast-forward %s on %s\n", *branch, *dir)
 		return ExitOK
 	}
 	ctx, cancel := withDefaultDeadline(ctx)
 	defer cancel()
 	run := gitrun.Runner{}
 	if err := gitmutate.FastForwardPull(ctx, run, *dir, *branch); err != nil {
-		fmt.Fprintf(w, "sync: %v\n", err)
+		writef(w, "sync: %v\n", err)
 		if errors.Is(ctx.Err(), context.Canceled) {
 			return ExitCancel
 		}
 		return ExitPrecondition
 	}
-	fmt.Fprintln(w, "synced")
+	writel(w, "synced")
 	return ExitOK
+}
+
+func writef(w io.Writer, format string, args ...any) {
+	_, _ = fmt.Fprintf(w, format, args...)
+}
+
+func writel(w io.Writer, line string) {
+	_, _ = fmt.Fprintln(w, line)
 }
 
 func credentialFromFlags(token, scm, remote string) auth.Credential {
