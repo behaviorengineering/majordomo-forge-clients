@@ -45,6 +45,12 @@ jobs:
           GOWORK: off
         run: go vet ./...
 
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1.6
+          args: ./...
+
       - name: go test
         env:
           GOWORK: off
@@ -65,3 +71,8 @@ jobs:
           ./majordomo-forge version
           ./majordomo-forge unknown || test $? = 2
           ./majordomo-forge sync --dry-run
+
+      - name: gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
