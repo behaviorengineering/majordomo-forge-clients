@@ -1,0 +1,67 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    strategy:
+      matrix:
+        go: ["1.26.0", "1.26.5"]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-go@v6
+        with:
+          go-version: ${{ matrix.go }}
+          cache: true
+
+      - name: Verify modules tidy
+        env:
+          GOWORK: off
+        run: |
+          cp go.mod go.mod.bak && cp go.sum go.sum.bak
+          go mod tidy
+          diff -u go.mod.bak go.mod
+          diff -u go.sum.bak go.sum
+          rm -f go.mod.bak go.sum.bak
+
+      - name: gofmt
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: go vet
+        env:
+          GOWORK: off
+        run: go vet ./...
+
+      - name: go test
+        env:
+          GOWORK: off
+        run: go test -race -count=1 ./...
+
+      - name: go build
+        env:
+          GOWORK: off
+        run: go build ./...
+
+      - name: CLI smoke
+        env:
+          GOWORK: off
+        run: |
+          go build -o majordomo-forge ./cmd/majordomo-forge
+          ./majordomo-forge
+          ./majordomo-forge help
+          ./majordomo-forge version
+          ./majordomo-forge unknown || test $? = 2
+          ./majordomo-forge sync --dry-run

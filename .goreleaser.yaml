@@ -1,0 +1,31 @@
+version: 2
+project_name: majordomo-forge-clients
+
+builds:
+  - id: majordomo-forge
+    main: ./cmd/majordomo-forge
+    binary: majordomo-forge
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w
+      - -X main.buildVersion={{.Version}}
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+checksum:
+  name_template: checksums.txt
+
+release:
+  github:
+    owner: behaviorengineering
+    name: majordomo-forge-clients
