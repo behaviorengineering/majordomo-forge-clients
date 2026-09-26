@@ -46,7 +46,7 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 		return ExitOK
 	}
 	switch args[0] {
-	case "help":
+	case "help", "-h", "--help":
 		printHelp(w)
 		return ExitOK
 	case "version":
@@ -67,10 +67,17 @@ func Run(ctx context.Context, args []string, w io.Writer) int {
 }
 
 func printAgentGuide(w io.Writer) {
-	writel(w, "gitvalet: CI-friendly forge and git client")
-	writel(w, "Load ai-copilots/BOOTSTRAP.md for harness wiring.")
-	writel(w, "Commands: help, version, inspect, resolve, checkout, sync")
-	writel(w, "Mutating: sync requires --yes; use --dry-run to plan.")
+	writel(w, "gitvalet "+version+": git and forge attendant for Go applications and CI")
+	writel(w, "")
+	writel(w, "Agent docs: AGENTS.md, ai-copilots/README.md, ai-copilots/BOOTSTRAP.md")
+	writel(w, "Operator skill: ai-copilots/skills/gitvalet-operator/SKILL.md")
+	writel(w, "")
+	writel(w, "Read-only:  inspect, resolve")
+	writel(w, "Materialize: checkout (pinned SHA)")
+	writel(w, "Mutating:   sync (--dry-run to plan, --yes to apply)")
+	writel(w, "")
+	writel(w, "Automation: set FORGE_TOKEN or pass --token; never embed tokens in URLs.")
+	writel(w, "Human catalog: gitvalet help (or -h / --help)")
 }
 
 func printHelp(w io.Writer) {

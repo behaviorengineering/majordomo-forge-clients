@@ -1,6 +1,13 @@
-# gitvalet harness
+# gitvalet ai-copilots
 
-Portable forge and Git integration module. Product review policy and TUI workflows stay in consumer repositories.
+Operator and developer agent pack for the gitvalet module (forge API + git plumbing).
+
+Canonical source lives here. Wiring is done by the AI copilot when you ask it
+to execute [BOOTSTRAP.md](BOOTSTRAP.md).
+
+**Minimal prompt:**
+
+> Wire gitvalet ai-copilots using BOOTSTRAP.md
 
 ## Package map
 

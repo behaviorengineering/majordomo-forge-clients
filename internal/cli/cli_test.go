@@ -13,8 +13,24 @@ func TestBareInvokePrintsGuide(t *testing.T) {
 	if code != ExitOK {
 		t.Fatalf("code %d", code)
 	}
-	if !strings.Contains(buf.String(), "gitvalet") {
+	s := buf.String()
+	if !strings.Contains(s, "gitvalet") {
 		t.Fatal("expected guide")
+	}
+	if !strings.Contains(s, "AGENTS.md") {
+		t.Fatal("expected AGENTS.md in guide")
+	}
+}
+
+func TestHelpAliases(t *testing.T) {
+	for _, arg := range []string{"help", "-h", "--help"} {
+		var buf bytes.Buffer
+		if Run(context.Background(), []string{arg}, &buf) != ExitOK {
+			t.Fatalf("%s failed", arg)
+		}
+		if !strings.Contains(buf.String(), "Usage:") {
+			t.Fatalf("%s missing usage", arg)
+		}
 	}
 }
 
