@@ -1,6 +1,6 @@
 .DEFAULT_GOAL := help
 
-.PHONY: help build test tidy fmt vet lint smoke
+.PHONY: help build test tidy fmt vet lint smoke hooks-install
 
 GOWORK ?= off
 
@@ -25,6 +25,10 @@ vet: ## Run go vet
 
 lint: ## Run golangci-lint
 	golangci-lint run ./...
+
+hooks-install: ## Use .githooks/pre-commit (gofmt on staged .go files)
+	chmod +x .githooks/pre-commit
+	git config core.hooksPath .githooks
 
 smoke: build ## Smoke-test CLI agent guide, help, version, usage
 	./bin/gitvalet

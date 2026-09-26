@@ -43,7 +43,11 @@ cmd := exec.Command("git", "-C", dir, "rev-parse", "HEAD")
 
 ## Quality gates
 
-Run from module root: `make help`, `make tidy`, `make fmt`, `make vet`, `make test`, `make build`, `make smoke`.
+Run from module root: `make hooks-install` (once per clone), `make help`, `make tidy`, `make fmt`, `make vet`, `make test`, `make build`, `make smoke`.
+
+**CONSTRAINT:** MUST run `make hooks-install` before the first commit in a new clone so `.githooks/pre-commit` formats staged Go files.
+- Enforcement: `git config --get core.hooksPath` is `.githooks`
+- Violation: STOP, run `make hooks-install`, then commit
 
 ## Pre-completion verification
 
