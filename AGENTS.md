@@ -23,4 +23,6 @@ MUST NOT copy skill bodies into the host unless links fail and the user approves
 
 ## Quality gates
 
-`make help`, `make tidy`, `make fmt`, `make vet`, `make test`, `make build`, `make smoke`.
+`make help`, `make hooks-install` (once per clone), `make tidy`, `make fmt`, `make vet`, `make test`, `make build`, `make smoke`.
+
+Pre-commit runs `gofmt` on staged `.go` files after `make hooks-install`.
